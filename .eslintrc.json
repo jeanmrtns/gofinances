@@ -24,6 +24,14 @@
         "prettier"
     ],
     "rules": {
+        "quotes": [2, "single", { "avoidEscape": true }],
+        "@typescript-eslint/quotes": [
+            "error",
+            "single",
+            {
+              "allowTemplateLiterals": true
+            }
+          ],          
         "import/no-unresolved": "off",
         "react/jsx-filename-extension": [
             2,
