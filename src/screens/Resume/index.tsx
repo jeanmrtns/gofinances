@@ -10,6 +10,7 @@ import { useTheme } from 'styled-components';
 import { VictoryPie } from 'victory-native';
 import { HistoryCard } from '../../components/HistoryCard';
 import { TransactionCardProps } from '../../components/TransactionCard';
+import { useAuth } from '../../hooks/useAuth';
 import { categories } from '../../utils/categories';
 import { formatAmount } from '../../utils/formatAmount';
 import {
@@ -35,6 +36,7 @@ interface TotalByCategory {
 
 export function Resume() {
   const [isLoading, setIsLoading] = useState(true);
+  const { user } = useAuth();
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [totalByCategories, setTotalByCategories] = useState<TotalByCategory[]>([]);
   const theme = useTheme();
@@ -51,7 +53,7 @@ export function Resume() {
 
   async function loadTransactions() {
     setIsLoading(true);
-    const dataKey = 'gofinances:transactions';
+    const dataKey = `gofinances:transactions:user=${user.id}`;
     const response = await AsyncStorage.getItem(dataKey);
     const data = response ? JSON.parse(response) : [];
     const outcomes = data.filter((transaction: TransactionsData) => {

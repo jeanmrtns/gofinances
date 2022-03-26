@@ -5,6 +5,7 @@ import { ActivityIndicator } from 'react-native';
 import { useTheme } from 'styled-components';
 import { HighlightCard } from '../../components/HighlightCard';
 import { TransactionCard, TransactionCardProps } from '../../components/TransactionCard';
+import { useAuth } from '../../hooks/useAuth';
 import { formatAmount } from '../../utils/formatAmount';
 import { getLastTransaction } from '../../utils/getLastTransaction';
 import {
@@ -52,7 +53,8 @@ export function Dashboard() {
   const [transactions, setTransactions] = useState<TransactionsData[]>([]);
   const [highLightCardData, setHighLightCardData] = useState<HighLightCardData>({} as HighLightCardData);
   const theme = useTheme();
-  const dataKey = 'gofinances:transactions';
+  const { logOut, user } = useAuth();
+  const dataKey = `gofinances:transactions:user=${user.id}`;
 
   async function loadTransactions() {
     const response = await AsyncStorage.getItem(dataKey);
@@ -137,13 +139,13 @@ export function Dashboard() {
             <Header>
               <UserWrapper>
                 <UserInfo>
-                  <UserPhoto source={{ uri: "https://github.com/jeanmrtns.png" }} />
+                  <UserPhoto source={{ uri: user.picture }} />
                   <User>
                     <Greetings>Olá,</Greetings>
-                    <UserName>Jean</UserName>
+                    <UserName>{user.name}</UserName>
                   </User>
                 </UserInfo>
-                <LogoutButton onPress={() => { }}>
+                <LogoutButton onPress={logOut}>
                   <Icon name='power' />
                 </LogoutButton>
               </UserWrapper>

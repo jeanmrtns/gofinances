@@ -11,6 +11,7 @@ import { Button } from '../../components/Form/Button';
 import { CategorySelectButton } from '../../components/Form/CategorySelectButton';
 import { ControlledInput } from '../../components/Form/ControlledInput';
 import { TypeButton } from '../../components/Form/TypeButton';
+import { useAuth } from '../../hooks/useAuth';
 import { Category, CategorySelect } from '../CategorySelect';
 import {
   Container,
@@ -37,7 +38,8 @@ export function Register() {
   const [isCategorySelectModalOpen, setIsCategorySelectModalOpen] = useState(false);
   const [category, setCategory] = useState({} as Category);
   const navigation: NavigationProp<ParamListBase> = useNavigation();
-  const dataKey = 'gofinances:transactions';
+  const { user } = useAuth();
+  const dataKey = `gofinances:transactions:user=${user.id}`;
 
   const {
     control,

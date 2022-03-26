@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
 import AppleSVG from '../../assets/apple.svg';
 import GoogleSVG from '../../assets/google.svg';
 import LogoSVG from '../../assets/logo.svg';
@@ -58,11 +58,13 @@ export function SignIn() {
             svg={GoogleSVG}
             onPress={handleSignInWithGoogle}
           />
-          <SocialLoginButton
+          {
+            Platform.OS === 'ios' && <SocialLoginButton
             title="Entrar com Apple"
             svg={AppleSVG}
             onPress={handleSignInWithApple}
           />
+          }
         </SocialLogin>
       </Footer>
     </Container>
