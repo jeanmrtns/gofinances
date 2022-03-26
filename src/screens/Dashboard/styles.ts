@@ -1,7 +1,7 @@
 
 import { Feather } from '@expo/vector-icons';
 import { FlatList, FlatListProps } from 'react-native';
-import { BorderlessButton, GestureHandlerRootView } from 'react-native-gesture-handler';
+import { BorderlessButton, GestureHandlerRootView, RectButton } from 'react-native-gesture-handler';
 import { getBottomSpace, getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import styled from "styled-components/native";
@@ -79,11 +79,25 @@ export const Transactions = styled.View`
   flex: 1;
 `;
 
-export const Title = styled.Text`
+export const Title = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: ${RFValue(16)}px;
+`;
+
+export const TitleText = styled.Text`
+  color: ${({theme}) => theme.colors.text_dark};
   font-family: ${({theme}) => theme.fonts.medium};
   font-size: ${RFValue(18)}px;
-  margin-bottom: ${RFValue(16)}px;
-  color: ${({theme}) => theme.colors.text_dark};
+`;
+
+export const ClearButton = styled(RectButton)``;
+
+export const ClearButtonText = styled.Text`
+  color: ${({theme}) => theme.colors.primary};
+  font-family: ${({theme}) => theme.fonts.medium};
+  font-size: ${RFValue(12)}px;
 `;
 
 export const TransactionsList = styled(
@@ -94,3 +108,9 @@ export const TransactionsList = styled(
     paddingBottom: getBottomSpace()
   },
 })``;
+
+export const LoadingContainer = styled.View`
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+`;

@@ -1,8 +1,11 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { NavigationProp, ParamListBase, useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Alert, Keyboard, Modal } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import uuid from 'react-native-uuid';
 import * as yup from "yup";
 import { Button } from '../../components/Form/Button';
 import { CategorySelectButton } from '../../components/Form/CategorySelectButton';
@@ -33,10 +36,13 @@ export function Register() {
   const [transactionType, setTransactionType] = useState<TransactionType>('income');
   const [isCategorySelectModalOpen, setIsCategorySelectModalOpen] = useState(false);
   const [category, setCategory] = useState({} as Category);
+  const navigation: NavigationProp<ParamListBase> = useNavigation();
+  const dataKey = 'gofinances:transactions';
 
   const {
     control,
     handleSubmit,
+    reset,
     formState: {
       errors
     }
@@ -56,7 +62,7 @@ export function Register() {
     setIsCategorySelectModalOpen(false);
   }
 
-  function handleRegister(form: FormData) {
+  async function handleRegister(form: FormData) {
 
     if (!category.key)
       return Alert.alert('Você deve informar uma categoria.');
@@ -64,14 +70,35 @@ export function Register() {
     if (!transactionType)
       return Alert.alert('Você deve informar o tipo da transação');
 
-    const data = {
+    const transaction = {
+      id: String(uuid.v4()),
       name: form.name,
       amount: form.amount,
-      transactionType,
-      category: category.key
+      type: transactionType,
+      category: category.key,
+      date: new Date()
     };
 
-    console.log(data)
+    try {
+      const data = await AsyncStorage.getItem(dataKey);
+
+      const currentData = data ? JSON.parse(data) : [];
+
+      const formattedData = [
+        ...currentData,
+        transaction
+      ]
+
+      await AsyncStorage.setItem(dataKey, JSON.stringify(formattedData));
+
+      reset();
+      setCategory({} as Category);
+      setTransactionType('income');
+      navigation.navigate('Listagem');
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Erro ao salvar os dados');
+    }
   }
 
   return (

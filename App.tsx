@@ -6,6 +6,8 @@ import {
 import { NavigationContainer } from '@react-navigation/native';
 import AppLoading from 'expo-app-loading';
 import { StatusBar } from 'expo-status-bar';
+import 'intl';
+import 'intl/locale-data/jsonp/pt-BR';
 import React from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ThemeProvider } from 'styled-components';
